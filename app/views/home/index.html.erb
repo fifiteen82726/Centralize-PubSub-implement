@@ -37,8 +37,9 @@
 
 <script type="text/javascript">
   $(function() {
+    buildConnection();
     var role = null;
-    var user_id = 0;
+    var subscriber_id = '0';
 
     $('#role-pub').click(function(event) {
       role = 'publisher'
@@ -63,7 +64,25 @@
       $(".type").removeClass("active");
       $(".type").attr('disabled','disabled');
       $(this).attr('class', 'role-btn btn btn-info type');
-      user_id = parseInt($(this).attr('sub-id'));
+      subscriber_id = $(this).attr('sub-id');
+      buildConnection(subscriber_id);
     });
   });
+
+
+  function buildConnection(subscribe_id){
+    var channelName = "WebNotificationsChannel" + subscribe_id
+
+    App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel", {
+      // Called when the subscription has been terminated by the server
+      disconnected() {
+        return console.log('disconnected');
+      },
+
+      received(data) {
+        // Called when there's incoming data on the websocket for this channel
+        return console.log('received');
+      }
+    });
+  }
 </script>
