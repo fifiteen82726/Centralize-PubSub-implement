@@ -13,3 +13,20 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+//= require jquery3
+//= require popper
+//= require bootstrap
+
+
+(function($) {
+  $.fn.invisible = function() {
+    return this.each(function() {
+        $(this).css("visibility", "hidden");
+    });
+  };
+  $.fn.visible = function() {
+    return this.each(function() {
+        $(this).css("visibility", "visible");
+    });
+  };
+}(jQuery));
