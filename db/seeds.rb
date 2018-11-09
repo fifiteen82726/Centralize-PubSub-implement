@@ -7,15 +7,17 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-Publisher.destroy_all
-Subscriber.destroy_all
-
-p1 = Publisher.create(name: 'Publisher_1')
-Subscriber.create(name: 'Subscriber_1')
-Subscriber.create(name: 'Subscriber_2')
+User.destroy_all
+Event.destroy_all
 
 
-Event.create(publisher_id: p1.id, name: 'Event1')
-Event.create(publisher_id: p1.id, name: 'Event2')
-Event.create(publisher_id: p1.id, name: 'Event3')
+p1 = User.create(email: 'publisher1@test.com', password: 'publisher1@test.com', is_publisher: true)
 
+s1 = User.create(email: 'subscriber1@test.com', password: 'subscriber1@test.com ', is_publisher: false)
+s2 = User.create(email: 'subscriber2@test.com', password: 'subscriber2@test.com ', is_publisher: false)
+s3 = User.create(email: 'subscriber3@test.com', password: 'subscriber3@test.com ', is_publisher: false)
+
+
+Event.create(user_id: p1.id, name: 'Event1')
+Event.create(user_id: p1.id, name: 'Event2')
+Event.create(user_id: p1.id, name: 'Event3')
