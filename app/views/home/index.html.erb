@@ -1,4 +1,4 @@
-<div class="container">
+<div>
   <div class="row">
     <h1>1. Choose Roles: </h1>
     <button class='btn btn-outline-primary role-btn' id='role-pub'> Publisher</button>
@@ -32,7 +32,6 @@
       you can subscribe activities and wait for the notification.
     </h2>
   </div>
-
 </div>
 
 <script type="text/javascript">
@@ -71,7 +70,7 @@
 
 
   function buildConnection(){
-    App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel", {
+    App.web_notifications = App.cable.subscriptions.create("WebNotifficationsChannel", {
       // Called when the subscription has been terminated by the server
       connected(){
         return console.log('connected');
