@@ -1,13 +1,12 @@
 class PubSubController < ApplicationController
   def publish
     event = Event.find_by(id: params[:eventId])
-    subscriber_ids = event.subscribers_ids
-    users = User.where(id: subscriber_ids)
+    users = event.users
 
-    if users
-      email_lists = users.pluck(:email) if subscriber_ids
+    if users.present?
+      email_lists = users.pluck(:email)
       ids = users.pluck(:id)
-      PubSub.notification(ids)
+      PubSub.notification(ids, event.name)
     end
 
     ok(email_lists)

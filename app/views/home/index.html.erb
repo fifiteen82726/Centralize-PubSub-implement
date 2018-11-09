@@ -53,7 +53,8 @@
         url: "publish",
         data: { eventId: eventId },
         success: function (data) {
-          $('#result').text(data.data);
+          emailList = data.data.join();
+          alertFadeInAndOut("Event already be notified to " + emailList);
         }
       });
     });
@@ -99,7 +100,6 @@
       },
 
       received(data) {
-        // Called when there's incoming data on the websocket for this channel
         return console.log('received');
       }
     });
