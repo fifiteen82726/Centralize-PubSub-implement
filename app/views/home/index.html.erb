@@ -65,16 +65,18 @@
       $(".type").attr('disabled','disabled');
       $(this).attr('class', 'role-btn btn btn-info type');
       subscriber_id = $(this).attr('sub-id');
-      buildConnection(subscriber_id);
+      console.log(subscriber_id);
     });
   });
 
 
-  function buildConnection(subscribe_id){
-    var channelName = "WebNotificationsChannel" + subscribe_id
-
+  function buildConnection(){
     App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel", {
       // Called when the subscription has been terminated by the server
+      connected(){
+        return console.log('connected');
+      },
+
       disconnected() {
         return console.log('disconnected');
       },
