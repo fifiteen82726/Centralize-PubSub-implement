@@ -1,71 +1,20 @@
-<div>
-  <div class="row">
-    <h1>1. Choose Roles: </h1>
-    <button class='btn btn-outline-primary role-btn' id='role-pub'> Publisher</button>
-    <button class='btn btn-outline-success role-btn' id='role-sub'>Subscriber</button>
+<% if current_user.is_publisher? %>
+  <div class=event-list>
+    <h2> Your Activity </h2>
+      <% @events.each do |event| %>
+        <li><%= event.name%> </li>
+
+      <% end %>
   </div>
-
-  <div class="row" id='pub-statement'>
-    <h2> You are now a <button>Publisher!</button>, you can create more activities or publishes event. </h2>
-
-    <br>
-
-    <h3>
+<% end %>
 
 
-    </h3>
-  </div>
-
-  <div class="row" id='sub-select'>
-    <h1>2. Please choose subscriber name: </h1>
-
-
-    <% @subscribers.each do |sub| %>
-      <div class="btn-group">
-        <button sub-id= <%=sub.id%> class="role-btn btn btn-outline-info type"><%=sub.name%></button>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="row" id='sub-statement'>
-    <h2> You are now a <button>Subscriber!</button> <br>
-      you can subscribe activities and wait for the notification.
-    </h2>
-  </div>
-</div>
 
 <script type="text/javascript">
   $(function() {
     buildConnection();
-    var role = null;
-    var subscriber_id = '0';
 
-    $('#role-pub').click(function(event) {
-      role = 'publisher'
-      $(this).attr('class', 'btn btn-primary role-btn');
-      $(this).attr('disabled','disabled');
-      $('#role-sub').attr('disabled','disabled');
 
-      $('#pub-statement').visible();
-    });
-
-    $('#role-sub').click(function(event) {
-      role = 'subscriber'
-      $(this).attr('class', 'btn btn-success role-btn');
-      $(this).attr('disabled','disabled');
-      $('#role-pub').attr('disabled','disabled');
-
-      $('#sub-select').visible();
-      $('#sub-statement').visible();
-    });
-
-    $(".type").click(function(){
-      $(".type").removeClass("active");
-      $(".type").attr('disabled','disabled');
-      $(this).attr('class', 'role-btn btn btn-info type');
-      subscriber_id = $(this).attr('sub-id');
-      console.log(subscriber_id);
-    });
   });
 
 

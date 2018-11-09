@@ -2,8 +2,10 @@ class HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @publisher = Publisher.first
-    @subscribers = Subscriber.all
-    @events = Event.all
+    if current_user.is_publisher
+      @events = Event.where(user_id: current_user.id)
+    else
+      @events = Event.all
+    end
   end
 end
