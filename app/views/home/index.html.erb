@@ -1,25 +1,45 @@
+<div id="alert-warn" class="alert alert-warning alert-top" role="alert">
+  <span class="alert-msg">No Route found!</span>
+</div>
+
+
 <% if current_user.is_publisher? %>
   <div class=event-list>
     <h2> Your Activity </h2>
       <% @events.each do |event| %>
-        <li><%= event.name%> </li>
-
+        <li class='activity-list'><%= event.name%>
+          <button
+            class='event-btn btn btn-outline-primary'
+            event-id=<%= event.id%>
+          >
+            Publish activity
+          </button>
+        </li>
       <% end %>
   </div>
 <% end %>
-
 
 
 <script type="text/javascript">
   $(function() {
     buildConnection();
 
+    $('.event-btn').click(function(event) {
+      eventId = $(this).attr('event-id');
+      console.log(eventId);
+    });
+
 
   });
 
+  function alertFadeInAndOut(text) {
+    $alert_warn = $('#alert-warn');
+    $alert_warn.find('.alert-msg').text(text);
+    $alert_warn.fadeIn(1000).delay(3000).fadeOut(2000);
+  };
 
   function buildConnection(){
-    App.web_notifications = App.cable.subscriptions.create("WebNotifficationsChannel", {
+    App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel", {
       // Called when the subscription has been terminated by the server
       connected(){
         return console.log('connected');
