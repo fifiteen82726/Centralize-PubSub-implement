@@ -100,7 +100,7 @@
       },
 
       received(data) {
-        return console.log('received');
+        eventFadeInAndOut(data.message + ' has already updated by publisher!')
       }
     });
   }
