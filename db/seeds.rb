@@ -18,6 +18,12 @@ s2 = User.create(email: 'subscriber2@test.com', password: 'subscriber2@test.com'
 s3 = User.create(email: 'subscriber3@test.com', password: 'subscriber3@test.com', is_publisher: false)
 
 
-Event.create(user_id: p1.id, name: 'Event1')
-Event.create(user_id: p1.id, name: 'Event2')
-Event.create(user_id: p1.id, name: 'Event3')
+e1 = Event.create(user_id: p1.id, name: 'Event1')
+e2 = Event.create(user_id: p1.id, name: 'Event2')
+e3 = Event.create(user_id: p1.id, name: 'Event3')
+
+
+# Subscribe
+UserEvent.create(user: s1, event: e1)
+UserEvent.create(user: s2, event: e2)
+UserEvent.create(user: s3, event: e3)

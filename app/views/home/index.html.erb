@@ -1,22 +1,42 @@
 <div id="alert-warn" class="alert alert-warning alert-top" role="alert">
-  <span class="alert-msg">No Route found!</span>
+  <span class="alert-msg"></span>
+</div>
+
+<div id="alert-danger" class="alert alert-danger alert-top" role="alert">
+  <span class="alert-msg"></span>
 </div>
 
 
 <% if current_user.is_publisher? %>
-  <div class=event-list>
-    <h2> Your Activity </h2>
-      <% @events.each do |event| %>
-        <li class='activity-list'><%= event.name%>
-          <button
-            class='event-btn btn btn-outline-primary'
-            event-id=<%= event.id%>
-          >
-            Publish activity
-          </button>
-        </li>
-      <% end %>
+  <h2> Your Activity </h2>
+  <div id=event-list>
+    <% @events.each do |event| %>
+      <li class='activity-list'><%= event.name%>
+        <button
+          class='event-btn btn btn-outline-primary'
+          event-id=<%= event.id%>
+        >
+          Publish activity
+        </button>
+      </li>
+    <% end %>
   </div>
+
+
+<% else %>
+  <% if @subscribe_events.present? %>
+    <h2> Here are your subscribed event </h2>
+    <div id=event-list>
+      <% @subscribe_events.each do |event| %>
+        <li> <%= event.name %> </li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <h2> Here are others event you can subscribe </h2>
+    <% @other_events.each do |event| %>
+      <button event-id=<%= event.id %> class="subscribe-btn btn btn-outline-info"> <%= event.name %> </button>
+    <% end %>
 <% end %>
 
 
@@ -27,9 +47,31 @@
     $('.event-btn').click(function(event) {
       eventId = $(this).attr('event-id');
       console.log(eventId);
+
+      $.ajax({
+        type: "POST",
+        url: "publish",
+        data: { eventId: eventId },
+        success: function (data) {
+          $('#result').text(data.data);
+        }
+      });
     });
 
-
+    $('.subscribe-btn').click(function(event) {
+      var eventId = $(this).attr('event-id');
+      $thisObj = $(this)
+      console.log(eventId);
+      $.ajax({
+        type: "POST",
+        url: "subscribe",
+        data: { eventId: eventId },
+        success: function (data) {
+          $thisObj.remove();
+          $('#event-list').append("<li>" + data.data.eventName + "</li>")
+        }
+      });
+    });
   });
 
   function alertFadeInAndOut(text) {
@@ -37,6 +79,13 @@
     $alert_warn.find('.alert-msg').text(text);
     $alert_warn.fadeIn(1000).delay(3000).fadeOut(2000);
   };
+
+  function eventFadeInAndOut(text) {
+    $alert_warn = $('#alert-danger');
+    $alert_warn.find('.alert-msg').text(text);
+    $alert_warn.fadeIn(1000).delay(3000).fadeOut(2000);
+  };
+
 
   function buildConnection(){
     App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel", {
