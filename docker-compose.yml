@@ -1,0 +1,35 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=pubsub_1_development
+      - MYSQL_USER=appuser
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3307:3306"
+
+  redis:
+    image: 'redis:4.0-alpine'
+
+  app:
+    image: pubsub_1:0.0.1
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - ".:/pubsub_1"
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+      - redis
+    links:
+      - db
+      - redis
+    environment:
+      DB_USER: root
+      DB_NAME: pubsub_1_development
+      DB_PASSWORD: password
+      DB_HOST: db
+      REDIS_CABLE_PORT: redis://redis:6379/1
